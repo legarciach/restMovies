@@ -69,7 +69,6 @@ public class MovieController {
     
     @PutMapping("/movie/{title}")
     public ResponseEntity<String> updateMovie(@PathVariable String title, @RequestBody Movie movie){
-    	
     	LOG.info("Dentro de updateMovie "+movie.toJson());
     	ResponseEntity<String> re = imdbClient.getMovieByTitle(title);
     	JsonObject convertedObject = new Gson().fromJson(re.getBody(), JsonObject.class);
@@ -78,7 +77,6 @@ public class MovieController {
         if(!convertedObject.get("Response").toString().equals("\"False\"")) {
         	String imdbid = convertedObject.get("imdbID").toString();
         	movie.setImdbID(imdbid);
-        	//LOG.info("imdbID: "+convertedObject.get("imdbID").toString());
         	Movie moviedb = repository.findByImdbID(imdbid);
         	if(movie.getComments() != null && !movie.getComments().trim().equals("")) {
         		moviedb.setComments(movie.getComments());
